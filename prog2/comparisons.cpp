@@ -1,0 +1,207 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+long int n_cmp = 0;
+
+int main()
+{
+
+  void qsort1(int *, int, int);
+  void qsort2(int *, int, int);
+  void qsort3(int *, int, int);
+
+  ifstream myfile;
+  int *a, i;
+
+  int n = 10000;
+  a = new int [n];
+
+  //  int a[] = {4,8,1,9,3,5,7};
+  //  int n = 7;
+
+  myfile.open("QuickSort.txt");
+
+  for (i=0; i<n; i++){
+    myfile >> a[i];
+  }
+
+  myfile.close();
+
+  //  for (i=0; i<n; i++){
+  //    cout << a[i] << " ";
+  //  }
+  //  cout << endl;
+
+  //  qsort1(a,0,n);
+  //  qsort2(a,0,n);
+  qsort3(a,0,n);
+
+  //  for (int i=0; i<n; i++){
+  //    cout << a[i] << " ";
+  //  }
+  //  cout << endl;
+
+  cout << n_cmp << endl;
+    
+  return 0;
+
+}
+
+void qsort1(int *a, int l, int r)
+{
+  int i,j,p,temp;
+
+  if (r-l < 2){
+    return;
+  }
+
+  n_cmp += r-l-1;
+
+  p = a[l]; // first element is pivot
+
+  i = l+1;
+
+  for (j=l+1; j<r; j++){
+    if (a[j] < p){
+      // swap
+      temp = a[j];
+      a[j] = a[i];
+      a[i] = temp;
+
+      i++;
+    }
+
+  }
+  
+  // put pivot into place
+  temp = a[l];
+  a[l] = a[i-1];
+  a[i-1] = temp;
+
+  // left guy
+  qsort1(a,l,i-1);
+
+  // right guy
+  qsort1(a,i,r);
+}
+
+void qsort2(int *a, int l, int r)
+{
+  int i,j,p,temp;
+
+  if (r-l < 2){
+    return;
+  }
+
+  n_cmp += r-l-1;
+
+  // swap last element with first
+  temp = a[l];
+  a[l] = a[r-1];
+  a[r-1] = temp;
+
+  p = a[l]; // first element is always pivot
+
+  i = l+1;
+
+  for (j=l+1; j<r; j++){
+    if (a[j] < p){
+      // swap
+      temp = a[j];
+      a[j] = a[i];
+      a[i] = temp;
+
+      i++;
+    }
+
+  }
+  
+  // put pivot into place
+  temp = a[l];
+  a[l] = a[i-1];
+  a[i-1] = temp;
+
+  // left guy
+  qsort2(a,l,i-1);
+
+  // right guy
+  qsort2(a,i,r);
+}
+
+void qsort3(int *a, int l, int r)
+{
+  int i,j,p,temp;
+
+  int first,middle,last,ind;
+
+  if (r-l < 2){
+    return;
+  }
+
+  n_cmp += r-l-1;
+
+  // median of three
+  first = a[l];
+  last  = a[r-1];
+
+  if ( (r-l)%2 ){ // odd
+    ind = (r+l-1)/2;
+    middle = a[ind];
+  }
+  else { // even
+    ind = (r+l-2)/2;
+    middle = a[ind];
+  }
+
+  // find median
+  if (first > middle && first < last){
+    ind = l;
+  }
+  else if (first < middle && first > last) {
+    ind = l;
+  }
+  else if (last > middle && last < first){
+    ind = r-1;
+  }
+  else if (last < middle && last > first) {
+    ind = r-1;
+  }
+  else {
+    ind = ind;
+  }
+
+  // swap elements with first
+  temp = a[l];
+  a[l] = a[ind];
+  a[ind] = temp;
+
+  p = a[l]; // first element is always pivot
+
+  i = l+1;
+
+  for (j=l+1; j<r; j++){
+    if (a[j] < p){
+      // swap
+      temp = a[j];
+      a[j] = a[i];
+      a[i] = temp;
+
+      i++;
+    }
+
+  }
+  
+  // put pivot into place
+  temp = a[l];
+  a[l] = a[i-1];
+  a[i-1] = temp;
+
+  // left guy
+  qsort3(a,l,i-1);
+
+  // right guy
+  qsort3(a,i,r);
+}

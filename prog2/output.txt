@@ -1,0 +1,3 @@
+FirstPivot: 162085
+Last Pivot: 164123
+Median    : 138382
